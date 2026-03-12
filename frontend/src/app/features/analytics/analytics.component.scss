@@ -1,0 +1,73 @@
+.analytics-page {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+
+  h1 {
+    margin-bottom: 1.5rem;
+    font-size: 1.6rem;
+  }
+}
+
+/* ── Metric cards ──────────────────────────────────────────────────────── */
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.3rem;
+  text-align: center;
+}
+
+.metric-label {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metric-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.stress .metric-value {
+  color: var(--color-warning);
+}
+
+.freedom .metric-value {
+  color: var(--color-success);
+}
+
+/* ── Chart ─────────────────────────────────────────────────────────────── */
+
+.chart-card {
+  h2 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 350px;
+}
+
+.muted {
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,55 @@
+<div class="chat-page">
+  <div class="chat-header">
+    <h1>💬 Chat with BRO</h1>
+    <button class="btn btn-outline btn-sm" (click)="clearChat()">Clear chat</button>
+  </div>
+
+  <div class="chat-messages" #messagesContainer>
+    @if (messages().length === 0) {
+      <div class="empty-chat">
+        <p class="emoji">🤖</p>
+        <p>Hey bro! Ask me anything about your schedule.</p>
+        <div class="suggestions">
+          <button class="btn btn-outline btn-sm" (click)="input = 'What does my week look like?'; send()">
+            What does my week look like?
+          </button>
+          <button class="btn btn-outline btn-sm" (click)="input = 'Am I working too much?'; send()">
+            Am I working too much?
+          </button>
+          <button class="btn btn-outline btn-sm" (click)="input = 'When can I go out this week?'; send()">
+            When can I go out this week?
+          </button>
+        </div>
+      </div>
+    }
+
+    @for (msg of messages(); track $index) {
+      <div class="message" [class.user]="msg.role === 'user'" [class.bro]="msg.role === 'bro'">
+        <div class="message-avatar">{{ msg.role === 'user' ? '🙂' : '🤖' }}</div>
+        <div class="message-bubble">
+          <div class="message-content" [innerHTML]="msg.content"></div>
+        </div>
+      </div>
+    }
+
+    @if (sending()) {
+      <div class="message bro">
+        <div class="message-avatar">🤖</div>
+        <div class="message-bubble typing">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="chat-input-bar">
+    <input
+      type="text"
+      [(ngModel)]="input"
+      (keydown)="onKeydown($event)"
+      placeholder="Ask BRO about your schedule…"
+      [disabled]="sending()"
+    />
+    <button class="btn btn-primary" (click)="send()" [disabled]="sending()">Send</button>
+  </div>
+</div>

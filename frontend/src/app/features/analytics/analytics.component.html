@@ -1,0 +1,45 @@
+<div class="analytics-page container">
+  <h1>📊 Schedule Analytics</h1>
+
+  @if (loading()) {
+    <p class="muted">Crunching your calendar data…</p>
+  } @else if (!metrics()) {
+    <p class="muted">No data available. Make sure your calendar has events.</p>
+  } @else {
+    <!-- Metric cards -->
+    <div class="metrics-grid">
+      <div class="card metric-card">
+        <span class="metric-label">Total Hours (30 d)</span>
+        <span class="metric-value">{{ metrics()!.total_hours | number:'1.1-1' }}</span>
+      </div>
+      <div class="card metric-card">
+        <span class="metric-label">Avg Daily Hours</span>
+        <span class="metric-value">{{ metrics()!.avg_daily_hours | number:'1.1-1' }}</span>
+      </div>
+      <div class="card metric-card">
+        <span class="metric-label">Work Hours</span>
+        <span class="metric-value">{{ metrics()!.work_hours | number:'1.1-1' }}</span>
+      </div>
+      <div class="card metric-card">
+        <span class="metric-label">Heavy Work Days</span>
+        <span class="metric-value">{{ metrics()!.heavy_work_days }}</span>
+      </div>
+      <div class="card metric-card stress">
+        <span class="metric-label">Stress Level</span>
+        <span class="metric-value">{{ metrics()!.stress_level }} / 10</span>
+      </div>
+      <div class="card metric-card freedom">
+        <span class="metric-label">Freedom Score</span>
+        <span class="metric-value">{{ metrics()!.freedom_score }} / 10</span>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <section class="card chart-card">
+      <h2>Daily Breakdown</h2>
+      <div class="chart-wrapper">
+        <canvas #chartCanvas></canvas>
+      </div>
+    </section>
+  }
+</div>

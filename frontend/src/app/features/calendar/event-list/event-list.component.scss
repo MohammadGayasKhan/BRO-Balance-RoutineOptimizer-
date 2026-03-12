@@ -1,0 +1,96 @@
+.events-page {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.event-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.event-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+}
+
+.event-time {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.btn-sm {
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+
+  p {
+    margin-bottom: 1rem;
+    color: var(--color-text-muted);
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+/* Delete confirmation overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.confirm-dialog {
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+
+  h3 {
+    margin-bottom: 0.8rem;
+  }
+
+  p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+.muted {
+  color: var(--color-text-muted);
+}

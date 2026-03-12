@@ -1,0 +1,15 @@
+<nav class="navbar">
+  <a class="navbar-brand" routerLink="/dashboard">
+    <span class="brand-icon">🧠</span> RythMind
+  </a>
+
+  @if (auth.isAuthenticated()) {
+    <div class="navbar-links">
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/events" routerLinkActive="active">Events</a>
+      <a routerLink="/chat" routerLinkActive="active">Chat with BRO</a>
+      <a routerLink="/analytics" routerLinkActive="active">Analytics</a>
+      <button class="btn btn-outline btn-sm" (click)="onLogout()">Logout</button>
+    </div>
+  }
+</nav>

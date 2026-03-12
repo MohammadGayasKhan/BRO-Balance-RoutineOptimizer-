@@ -1,0 +1,43 @@
+<div class="events-page container">
+  <div class="page-header">
+    <h1>Calendar Events</h1>
+    <a routerLink="/events/new" class="btn btn-primary">➕ New Event</a>
+  </div>
+
+  @if (loading()) {
+    <p class="muted">Loading events…</p>
+  } @else if (events().length === 0) {
+    <div class="card empty-state">
+      <p>No upcoming events found.</p>
+      <a routerLink="/events/new" class="btn btn-primary">Create your first event</a>
+    </div>
+  } @else {
+    <div class="event-grid">
+      @for (event of events(); track event.id) {
+        <div class="card event-card">
+          <div class="event-info">
+            <h3>{{ event.summary }}</h3>
+            <p class="event-time">{{ event.formatted_time }}</p>
+          </div>
+          <button class="btn btn-danger btn-sm" (click)="confirmDelete(event)">
+            Delete
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Delete confirmation overlay -->
+  @if (deleteTarget()) {
+    <div class="overlay" (click)="cancelDelete()">
+      <div class="card confirm-dialog" (click)="$event.stopPropagation()">
+        <h3>Delete Event?</h3>
+        <p>Are you sure you want to delete <strong>{{ deleteTarget()!.summary }}</strong>?</p>
+        <div class="dialog-actions">
+          <button class="btn btn-outline" (click)="cancelDelete()">Cancel</button>
+          <button class="btn btn-danger" (click)="executeDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

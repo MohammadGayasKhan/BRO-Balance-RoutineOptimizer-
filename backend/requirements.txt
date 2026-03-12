@@ -1,0 +1,22 @@
+# ── Core framework ───────────────────────────────
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+starlette[full]>=0.40.0
+itsdangerous>=2.1.0
+python-dotenv>=1.0.0
+httpx>=0.27.0
+
+# ── Google Calendar OAuth & API ──────────────────
+google-auth>=2.29.0
+google-auth-oauthlib>=1.2.0
+google-api-python-client>=2.130.0
+
+# ── Grok AI (xAI – OpenAI-compatible client) ────
+openai>=1.30.0
+
+# ── Date parsing ────────────────────────────────
+python-dateutil>=2.9.0
+
+# ── Vector DB (optional – only needed if using Pinecone KB)
+pinecone>=5.0.0
+sentence-transformers>=3.0.0

@@ -1,0 +1,30 @@
+<div class="create-page container">
+  <h1>Create Event</h1>
+
+  <form class="card create-form" (ngSubmit)="onSubmit()">
+    <label>
+      <span>Title</span>
+      <input type="text" [(ngModel)]="title" name="title" placeholder="Meeting with team" />
+    </label>
+
+    <label>
+      <span>Start</span>
+      <input type="datetime-local" [(ngModel)]="start" name="start" />
+    </label>
+
+    <label>
+      <span>End</span>
+      <input type="datetime-local" [(ngModel)]="end" name="end" />
+    </label>
+
+    @if (error) {
+      <p class="error-text">{{ error }}</p>
+    }
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" [disabled]="saving">
+        {{ saving ? 'Creating…' : 'Create Event' }}
+      </button>
+    </div>
+  </form>
+</div>
