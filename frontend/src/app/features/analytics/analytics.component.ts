@@ -25,7 +25,7 @@ Chart.register(...registerables);
   templateUrl: './analytics.component.html',
   styleUrl: './analytics.component.scss',
 })
-export class AnalyticsComponent implements OnInit {
+export class AnalyticsComponent implements OnInit, AfterViewInit {
   @ViewChild('chartCanvas', { static: false }) chartCanvas!: ElementRef<HTMLCanvasElement>;
 
   private analyticsService = inject(AnalyticsService);
@@ -33,6 +33,7 @@ export class AnalyticsComponent implements OnInit {
   metrics = signal<AnalyticsMetrics | null>(null);
   chartData = signal<DailyMetric[]>([]);
   loading = signal(true);
+  private viewReady = false;
   private chart: Chart | null = null;
 
   ngOnInit() {
@@ -41,11 +42,21 @@ export class AnalyticsComponent implements OnInit {
         this.metrics.set(res.metrics);
         this.chartData.set(res.chart_data);
         this.loading.set(false);
-        // Build chart after data is loaded and view is updated
-        setTimeout(() => this.buildChart(), 0);
+        this.tryBuildChart();
       },
       error: () => this.loading.set(false),
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.viewReady = true;
+    this.tryBuildChart();
+  }
+
+  private tryBuildChart() {
+    if (!this.viewReady) return;
+    if (this.chartData().length === 0) return;
+    this.buildChart();
   }
 
   private buildChart() {
@@ -65,13 +76,13 @@ export class AnalyticsComponent implements OnInit {
           {
             label: 'Work hours',
             data: data.map((d) => d.work_hours),
-            backgroundColor: 'rgba(99, 102, 241, 0.7)',
+            backgroundColor: 'rgba(33, 199, 216, 0.7)',
             borderRadius: 4,
           },
           {
             label: 'Leisure hours',
             data: data.map((d) => d.leisure_hours),
-            backgroundColor: 'rgba(6, 182, 212, 0.7)',
+            backgroundColor: 'rgba(255, 138, 91, 0.7)',
             borderRadius: 4,
           },
         ],

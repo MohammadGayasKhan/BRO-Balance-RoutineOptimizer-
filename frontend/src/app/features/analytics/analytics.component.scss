@@ -3,8 +3,9 @@
   padding-bottom: 3rem;
 
   h1 {
-    margin-bottom: 1.5rem;
-    font-size: 1.6rem;
+    margin-bottom: 1.8rem;
+    font-size: 1.9rem;
+    font-family: var(--font-display);
   }
 }
 
@@ -13,8 +14,8 @@
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.2rem;
+  margin-bottom: 2.4rem;
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
@@ -29,9 +30,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  padding: 1.3rem;
+  gap: 0.45rem;
+  padding: 1.5rem;
   text-align: center;
+  border-radius: 18px;
+  background: rgba(19, 28, 43, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-soft);
 }
 
 .metric-label {
@@ -42,8 +47,9 @@
 }
 
 .metric-value {
-  font-size: 1.6rem;
+  font-size: 1.75rem;
   font-weight: 700;
+  font-family: var(--font-display);
 }
 
 .stress .metric-value {
@@ -58,14 +64,19 @@
 
 .chart-card {
   h2 {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+    font-family: var(--font-display);
   }
 }
 
 .chart-wrapper {
   position: relative;
   height: 350px;
+  border-radius: 20px;
+  background: rgba(16, 23, 36, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem;
 }
 
 .muted {

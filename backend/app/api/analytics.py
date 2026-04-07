@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import dateutil.parser
 from fastapi import APIRouter, HTTPException
@@ -51,7 +51,12 @@ async def time_stats(days: int = 30):
         else:
             daily_work[date_key] += duration_h
 
-    dates = sorted(daily_total.keys())
+    # Ensure we return a contiguous date range, even if there are no events.
+    today = datetime.utcnow().date()
+    dates = [
+        (today.replace(day=today.day) - timedelta(days=offset)).strftime("%Y-%m-%d")
+        for offset in range(days - 1, -1, -1)
+    ]
 
     total_hours = sum(daily_total.values())
     work_hours = sum(daily_work.values())
@@ -62,17 +67,20 @@ async def time_stats(days: int = 30):
     moderate_work_days = sum(1 for h in daily_work.values() if 4 <= h < 6)
 
     # Stress scoring
-    stress_points = sum(3 if h >= 6 else (1 if h >= 4 else 0) for h in daily_work.values())
-    max_points = days * 3
-    stress_level = min(10, int((stress_points / max(max_points, 1)) * 20))
+    # Blend average work intensity with the frequency of heavy days.
+    avg_work_ratio = min(1.0, avg_work / 6.0) if days > 0 else 0.0
+    heavy_ratio = heavy_work_days / max(days, 1)
+    stress_raw = (avg_work_ratio * 0.7) + (heavy_ratio * 0.3)
+    stress_level = min(10, max(1 if work_hours > 0 else 0, int(round(stress_raw * 10))))
 
     free_days = days - sum(1 for h in daily_work.values() if h > 2)
-    freedom_score = min(10, int((free_days / max(days, 1)) * 15))
+    freedom_ratio = free_days / max(days, 1)
+    freedom_score = min(10, int(round(freedom_ratio * 10)))
 
     chart_data = [
         DailyMetric(
             date=d,
-            total_hours=round(daily_total[d], 2),
+            total_hours=round(daily_total.get(d, 0), 2),
             work_hours=round(daily_work.get(d, 0), 2),
             leisure_hours=round(daily_leisure.get(d, 0), 2),
         )

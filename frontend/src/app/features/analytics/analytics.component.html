@@ -38,7 +38,11 @@
     <section class="card chart-card">
       <h2>Daily Breakdown</h2>
       <div class="chart-wrapper">
-        <canvas #chartCanvas></canvas>
+        @if (chartData().length === 0) {
+          <p class="muted">No daily data yet. Add events to see the breakdown.</p>
+        } @else {
+          <canvas #chartCanvas></canvas>
+        }
       </div>
     </section>
   }
