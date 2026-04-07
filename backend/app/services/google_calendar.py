@@ -166,6 +166,26 @@ def list_events_in_range(days: int = 30) -> list[dict[str, Any]]:
     return result.get("items", [])
 
 
+def list_events_between(start: datetime, end: datetime) -> list[dict[str, Any]]:
+    """List events between two datetimes (inclusive)."""
+    service = get_calendar_service()
+    time_min = start.isoformat() + "Z"
+    time_max = end.isoformat() + "Z"
+    result = (
+        service.events()
+        .list(
+            calendarId="primary",
+            timeMin=time_min,
+            timeMax=time_max,
+            maxResults=500,
+            singleEvents=True,
+            orderBy="startTime",
+        )
+        .execute()
+    )
+    return result.get("items", [])
+
+
 def create_event(title: str, start: datetime, end: datetime, timezone: str = "Asia/Kolkata") -> dict[str, Any]:
     service = get_calendar_service()
     body = {

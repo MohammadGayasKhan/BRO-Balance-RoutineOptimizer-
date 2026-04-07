@@ -1,5 +1,60 @@
 <div class="analytics-page container">
-  <h1>📊 Schedule Analytics</h1>
+  <div class="analytics-header">
+    <div>
+      <h1>📊 Schedule Analytics</h1>
+      <p class="muted">{{ rangeLabel }}</p>
+    </div>
+    <div class="range-controls">
+      <button class="btn btn-outline btn-sm" (click)="shiftRange('prev')">Prev</button>
+      <button class="btn btn-outline btn-sm" (click)="resetRange()">Today</button>
+      <button class="btn btn-outline btn-sm" (click)="shiftRange('next')">Next</button>
+      <div class="divider"></div>
+      <button
+        class="btn btn-sm"
+        [class.btn-primary]="isPresetActive(7)"
+        [class.btn-outline]="!isPresetActive(7)"
+        (click)="setRange(7)"
+      >
+        7D
+      </button>
+      <button
+        class="btn btn-sm"
+        [class.btn-primary]="isPresetActive(30)"
+        [class.btn-outline]="!isPresetActive(30)"
+        (click)="setRange(30)"
+      >
+        30D
+      </button>
+      <button
+        class="btn btn-sm"
+        [class.btn-primary]="isPresetActive(90)"
+        [class.btn-outline]="!isPresetActive(90)"
+        (click)="setRange(90)"
+      >
+        90D
+      </button>
+      <div class="divider"></div>
+      <div class="date-range">
+        <label>
+          <span class="muted">Start</span>
+          <input
+            type="date"
+            [value]="startDate()"
+            (change)="startDate.set($any($event.target).value)"
+          />
+        </label>
+        <label>
+          <span class="muted">End</span>
+          <input
+            type="date"
+            [value]="endDate()"
+            (change)="endDate.set($any($event.target).value)"
+          />
+        </label>
+        <button class="btn btn-outline btn-sm" (click)="applyCustomRange()">Apply</button>
+      </div>
+    </div>
+  </div>
 
   @if (loading()) {
     <p class="muted">Crunching your calendar data…</p>
@@ -9,7 +64,7 @@
     <!-- Metric cards -->
     <div class="metrics-grid">
       <div class="card metric-card">
-        <span class="metric-label">Total Hours (30 d)</span>
+        <span class="metric-label">Total Hours ({{ rangeDays() }} d)</span>
         <span class="metric-value">{{ metrics()!.total_hours | number:'1.1-1' }}</span>
       </div>
       <div class="card metric-card">
@@ -37,11 +92,17 @@
     <!-- Chart -->
     <section class="card chart-card">
       <h2>Daily Breakdown</h2>
-      <div class="chart-wrapper">
+      <div
+        class="chart-wrapper"
+        (mousedown)="onDragStart($event, chartWrapper)"
+        (mousemove)="onDragMove($event, chartWrapper)"
+        (mouseup)="onDragEnd()"
+        (mouseleave)="onDragEnd()"
+        #chartWrapper
+      >
+        <canvas #chartCanvas></canvas>
         @if (chartData().length === 0) {
-          <p class="muted">No daily data yet. Add events to see the breakdown.</p>
-        } @else {
-          <canvas #chartCanvas></canvas>
+          <p class="muted empty-hint">No daily data yet. Add events to see the breakdown.</p>
         }
       </div>
     </section>

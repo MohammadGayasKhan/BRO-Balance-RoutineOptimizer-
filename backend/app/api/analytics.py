@@ -21,10 +21,27 @@ LEISURE_KEYWORDS = [
 
 
 @router.get("/time-stats", response_model=AnalyticsResponse)
-async def time_stats(days: int = 30):
-    """Analyse calendar events over the past *days* days."""
+async def time_stats(
+    days: int = 30,
+    offset_days: int = 0,
+    start_date: str | None = None,
+    end_date: str | None = None,
+):
+    """Analyse calendar events over a date window with optional offset or explicit range."""
     try:
-        raw_events = gcal.list_events_in_range(days=days)
+        if start_date and end_date:
+            range_start = datetime.strptime(start_date, "%Y-%m-%d").date()
+            range_end = datetime.strptime(end_date, "%Y-%m-%d").date()
+            days = (range_end - range_start).days + 1
+        else:
+            today = datetime.utcnow().date()
+            range_end = today + timedelta(days=offset_days)
+            range_start = range_end - timedelta(days=days - 1)
+
+        start_dt = datetime.combine(range_start, datetime.min.time())
+        end_dt = datetime.combine(range_end, datetime.max.time())
+
+        raw_events = gcal.list_events_between(start=start_dt, end=end_dt)
     except RuntimeError as exc:
         raise HTTPException(status_code=401, detail=str(exc))
 
@@ -52,10 +69,9 @@ async def time_stats(days: int = 30):
             daily_work[date_key] += duration_h
 
     # Ensure we return a contiguous date range, even if there are no events.
-    today = datetime.utcnow().date()
     dates = [
-        (today.replace(day=today.day) - timedelta(days=offset)).strftime("%Y-%m-%d")
-        for offset in range(days - 1, -1, -1)
+        (range_start + timedelta(days=offset)).strftime("%Y-%m-%d")
+        for offset in range(max(days, 1))
     ]
 
     total_hours = sum(daily_total.values())
