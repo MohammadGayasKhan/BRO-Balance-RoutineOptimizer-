@@ -1,30 +1,49 @@
 <div class="create-page container">
-  <h1>Create Event</h1>
+  <div class="page-head">
+    <h1>Create Event</h1>
+    <p>Block time with intention and keep your day in rhythm.</p>
+  </div>
 
   <form class="card create-form" (ngSubmit)="onSubmit()">
-    <label>
-      <span>Title</span>
-      <input type="text" [(ngModel)]="title" name="title" placeholder="Meeting with team" />
-    </label>
+    <section class="form-main">
+      <label>
+        <span>Title</span>
+        <input type="text" [(ngModel)]="title" name="title" placeholder="Meeting with team" />
+      </label>
 
-    <label>
-      <span>Start</span>
-      <input type="datetime-local" [(ngModel)]="start" name="start" />
-    </label>
+      <div class="time-grid">
+        <label>
+          <span>Start</span>
+          <input type="datetime-local" [(ngModel)]="start" name="start" />
+        </label>
 
-    <label>
-      <span>End</span>
-      <input type="datetime-local" [(ngModel)]="end" name="end" />
-    </label>
+        <label>
+          <span>End</span>
+          <input type="datetime-local" [(ngModel)]="end" name="end" />
+        </label>
+      </div>
 
-    @if (error) {
-      <p class="error-text">{{ error }}</p>
-    }
+      @if (error) {
+        <p class="error-text">{{ error }}</p>
+      }
 
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary" [disabled]="saving">
-        {{ saving ? 'Creating…' : 'Create Event' }}
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          {{ saving ? 'Creating…' : 'Create Event' }}
+        </button>
+      </div>
+    </section>
+
+    <aside class="form-side">
+      <h3>Quick Tips</h3>
+      <ul>
+        <li>Use clear titles so BRO can find and update events faster.</li>
+        <li>Keep realistic time blocks to improve stress insights.</li>
+        <li>Add breaks between heavy sessions when possible.</li>
+      </ul>
+      <button type="button" class="side-badge" (click)="goToChat()">
+        Smart scheduling starts here
       </button>
-    </div>
+    </aside>
   </form>
 </div>

@@ -131,6 +131,7 @@ button {
 /* ── Form inputs ────────────────────────────────────────────────────────── */
 
 input[type='text'],
+input[type='date'],
 input[type='datetime-local'],
 textarea {
   width: 100%;
@@ -148,6 +149,17 @@ textarea {
     border-color: rgba(33, 199, 216, 0.7);
     box-shadow: 0 0 0 3px rgba(33, 199, 216, 0.15);
   }
+}
+
+input[type='date'],
+input[type='datetime-local'] {
+  color-scheme: dark;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.2);
+  opacity: 0.9;
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────────────────── */
