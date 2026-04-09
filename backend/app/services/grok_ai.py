@@ -136,8 +136,11 @@ TOOLS: list[dict[str, Any]] = [
                 "type": "object",
                 "properties": {
                     "max_results": {
-                        "type": "integer",
-                        "description": "Maximum events to return (default 10).",
+                        "anyOf": [
+                            {"type": "integer"},
+                            {"type": "string"},
+                        ],
+                        "description": "Maximum events to return (default 10). Accepts integer or numeric string.",
                     },
                 },
                 "required": [],
@@ -171,6 +174,14 @@ TOOLS: list[dict[str, Any]] = [
 
 def _execute_tool(name: str, arguments: dict[str, Any]) -> str:
     """Execute a tool call and return a JSON string result."""
+
+    def _to_int(value: Any, default: int = 10) -> int:
+        """Best-effort conversion for LLM tool args that may arrive as strings."""
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return default
+
     try:
         if name == "create_event":
             start_dt = datetime.fromisoformat(arguments["start"])
@@ -212,7 +223,8 @@ def _execute_tool(name: str, arguments: dict[str, Any]) -> str:
             return json.dumps({"status": "success", "message": "Event deleted."})
 
         elif name == "list_upcoming_events":
-            max_r = arguments.get("max_results", 10)
+            max_r = _to_int(arguments.get("max_results", 10), default=10)
+            max_r = max(1, min(max_r, 100))
             events = gcal.list_upcoming_events(max_results=max_r)
             return json.dumps({"status": "success", "events": events})
 
